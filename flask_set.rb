@@ -15,8 +15,27 @@ class FlaskSet
   # end
 
   def solve
-    move = potential_moves.lazy.take(1)
+    p object_id: object_id
+    p solved?: solved?
+    return if solved?
+    while(move_indices = potential_moves.shift) do
+      child = clone
+      child.do_move(move_indices)
+      p do_move: move_indices
+      child.inspect
+      if child.solved?
+        return "SOLVED!"
+      else
+        child.solve
+      end
+    end
     # Node.new()
+  end
+
+  def do_move(indices)
+    from, to = indices
+    @flask_set[to[0]][to[1]] = @flask_set[from[0]][from[1]]
+    @flask_set[from[0]][from[1]] = 0
   end
 
   def clone
