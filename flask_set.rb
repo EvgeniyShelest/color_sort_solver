@@ -4,20 +4,19 @@ require './flask_set_generator.rb'
 class FlaskSet
   include FlaskSetShuffle
 
+  @@count = 0
+  @@level = 0
+
   def initialize(flask_set = nil)
     @flask_set = flask_set || FlaskSetGenerator.call()
+    @@count += 1
   end
 
-  # class Node
-  #   attributes :parent_node, :flask_set
-  #   def initialize(parent_node = nil,)
-  #   end
-  # end
-
   def solve
-    p object_id: object_id
-    p solved?: solved?
-    return if solved?
+    @@level += 1
+    p count: @@count
+    p level: @@level
+    return "SOLVED!" if solved?
     while(move_indices = potential_moves.shift) do
       child = clone
       child.do_move(move_indices)
@@ -26,10 +25,10 @@ class FlaskSet
       if child.solved?
         return "SOLVED!"
       else
-        child.solve
+        res = child.solve
+        return "SOLVED!" if res == "SOLVED!"
       end
     end
-    # Node.new()
   end
 
   def do_move(indices)
