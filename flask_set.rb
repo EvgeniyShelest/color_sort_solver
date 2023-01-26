@@ -78,7 +78,7 @@ private
 
       @flask_set.each_with_index do |flask_to, flask_to_index|
         next if flask_to_index == flask_from_index
-        next if monofilled?(flask_to)
+        next if fullfilled?(flask_to)
         if empty?(flask_to)
           next if last_non_empty_index_from.zero? #omit senseless move from 0 index to 0 index
           @potential_moves << [from_index, [flask_to_index, 0]]
@@ -90,6 +90,10 @@ private
       end
     end
     @potential_moves
+  end
+
+  def fullfilled?(flask)
+    flask.all? { |el| !el.zero? }
   end
 
   def monofilled?(flask)
