@@ -67,7 +67,7 @@ class FlaskSet
 private
 
   def potential_moves
-    return @potential_moves if defined?(@potential_moves)
+    return @potential_moves unless @potential_moves.nil?
 
     @potential_moves = []
     @flask_set.each_with_index do |flask_from, flask_from_index|
@@ -80,6 +80,7 @@ private
         next if flask_to_index == flask_from_index
         next if monofilled?(flask_to)
         if empty?(flask_to)
+          next if last_non_empty_index_from.zero? #omit senseless move from 0 index to 0 index
           @potential_moves << [from_index, [flask_to_index, 0]]
           next
         end

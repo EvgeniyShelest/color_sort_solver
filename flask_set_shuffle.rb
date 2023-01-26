@@ -5,6 +5,7 @@ module FlaskSetShuffle
       inspect
       p '-'*@flask_set.size*3
     end
+    @potential_moves = nil
   end
 
 private
