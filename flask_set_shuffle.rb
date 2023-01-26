@@ -17,18 +17,10 @@ private
   end
 
   def random_non_empty_flask
-    loop do
-      random_flask_index = rand(@flask_set.size)
-      return @flask_set[random_flask_index] if @flask_set[random_flask_index].any?
-    end
+    @flask_set.select {|flask| !empty?(flask) }.sample
   end
 
   def random_non_full_flask(except_flask)
-    loop do
-      random_flask_index = rand(@flask_set.size)
-      next if except_flask === @flask_set[random_flask_index]
-      flask = @flask_set[random_flask_index]
-      return flask if flask.count { |i| i.zero? } > 0
-    end
+    @flask_set.select {|flask| flask.include?(0) && flask != except_flask }.sample
   end
 end
