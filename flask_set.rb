@@ -13,6 +13,11 @@ class FlaskSet
     def generator
       @generator || FlaskSetGenerator.new
     end
+
+    def reset_counters
+      @@count = 0
+      @@level = 0
+    end
   end
 
   attr_reader :parent
