@@ -75,6 +75,12 @@ private
       from_index = [flask_from_index, last_non_empty_index_from]
       el = flask_from[last_non_empty_index_from]
 
+      # detect best fitable flask to move to (sample [1,1,1,0])
+      flask_to_index = @flask_set.find_index { |flask| flask == ([el]*3 << 0) }
+      if flask_to_index
+        @potential_moves << [from_index, [flask_to_index, 3]]
+        next
+      end
       @flask_set.each_with_index do |flask_to, flask_to_index|
         next if flask_to_index == flask_from_index
         next if fullfilled?(flask_to)
