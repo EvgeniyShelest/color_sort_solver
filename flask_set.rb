@@ -93,6 +93,10 @@ class FlaskSet
     @flask_set.all? { |flask| monofilled?(flask) || empty?(flask) }
   end
 
+  def add_empty_flask
+    @flask_set << [0]*flask_amount
+  end
+
 private
 
   def potential_moves
