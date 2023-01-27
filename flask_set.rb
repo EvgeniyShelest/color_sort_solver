@@ -7,10 +7,18 @@ class FlaskSet
   @@count = 0
   @@level = 0
 
+  class << self
+    attr_writer :generator
+
+    def generator
+      @generator || FlaskSetGenerator.new
+    end
+  end
+
   attr_reader :parent
 
   def initialize(flask_set = nil, parent = nil)
-    @flask_set = flask_set || FlaskSetGenerator.call()
+    @flask_set = flask_set || self.class.generator.call()
     @parent = parent
     @@count += 1
   end

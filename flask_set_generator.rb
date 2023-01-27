@@ -3,20 +3,24 @@ class FlaskSetGenerator
   FLASK_CAPACITY = 4
   FLASK_AMOUNT = 4
 
-  def self.call(flask_amount = FLASK_AMOUNT)
+  def initialize(flask_amount = FLASK_AMOUNT, flask_capacity = FLASK_CAPACITY)
     @flask_amount = flask_amount
+    @flask_capacity = flask_capacity
+  end
+
+  def call
     generate_flask_set
   end
 
 private
 
-  def self.generate_flask_set
+  def generate_flask_set
     flask_set = []
     (1..@flask_amount).each do |color|
-      flask_set << [color] * FLASK_CAPACITY
+      flask_set << [color] * @flask_capacity
     end
     EMPTY_FLASK_AMOUNT.times do
-      flask_set << [0] * FLASK_CAPACITY
+      flask_set << [0] * @flask_capacity
     end
     flask_set
   end
