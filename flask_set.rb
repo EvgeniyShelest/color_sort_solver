@@ -7,8 +7,11 @@ class FlaskSet
   @@count = 0
   @@level = 0
 
-  def initialize(flask_set = nil)
+  attr_reader :parent
+
+  def initialize(flask_set = nil, parent = nil)
     @flask_set = flask_set || FlaskSetGenerator.call()
+    @parent = parent
     @@count += 1
   end
 
@@ -22,6 +25,12 @@ class FlaskSet
       child.do_move(move_indices)
       p do_move: move_indices
       child.inspect
+      # to omit infinite loop detect if upstairs was current state
+      if repeated_state?
+       p "repeated_state!  "*4
+       child = nil
+       return
+      end
       if child.solved?
         return "SOLVED!"
       else
@@ -37,8 +46,16 @@ class FlaskSet
     @flask_set[from[0]][from[1]] = 0
   end
 
+  def repeated_state?
+    current = self
+    while(current = current.parent) do
+      return true if current == self
+    end
+    false
+  end
+
   def clone
-    self.class.new(@flask_set.clone.map(&:clone))
+    self.class.new(@flask_set.clone.map(&:clone), self)
   end
 
   def ==(other)
