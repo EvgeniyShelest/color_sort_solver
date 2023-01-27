@@ -125,7 +125,7 @@ private
         end
         last_non_empty_index_to = last_non_empty_index(flask_to)
         next if flask_to[last_non_empty_index_to] != el
-        @potential_moves << [from_index, [flask_to_index, last_non_empty_index_to+1]]
+        @potential_moves << [from_index, [flask_to_index, last_non_empty_index_to + 1]]
       end
     end
     @potential_moves
