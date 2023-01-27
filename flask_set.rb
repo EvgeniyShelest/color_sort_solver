@@ -42,7 +42,7 @@ class FlaskSet
       if repeated_state?
        p "repeated_state!  "*4
        child = nil
-       return
+       next
       end
       if child.solved?
         return "SOLVED!"
