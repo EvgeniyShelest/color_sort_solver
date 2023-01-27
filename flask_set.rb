@@ -110,9 +110,9 @@ private
       el = flask_from[last_non_empty_index_from]
 
       # detect best fitable flask to move to (sample [1,1,1,0])
-      flask_to_index = @flask_set.find_index { |flask| flask == ([el]*3 << 0) }
+      flask_to_index = @flask_set.find_index { |flask| flask == ([el]*(flask_capacity - 1) << 0) }
       if flask_to_index
-        @potential_moves << [from_index, [flask_to_index, 3]]
+        @potential_moves << [from_index, [flask_to_index, (flask_capacity - 1)]]
         next
       end
       @flask_set.each_with_index do |flask_to, flask_to_index|
@@ -153,5 +153,12 @@ private
 
   def first_empty_index(flask)
     flask.find_index { |el| el.zero? }
+  end
+
+  def flask_capacity
+    # this might be
+    # self.class.generator.instance_variable_get(:@flask_capacity)
+    # but we can change generator for class in runtime after set was created.
+    @flask_set[0].size
   end
 end
