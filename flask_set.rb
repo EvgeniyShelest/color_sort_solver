@@ -28,6 +28,54 @@ class FlaskSet
     @@count += 1
   end
 
+  def resolve
+    self.class.reset_counters
+    @potential_moves = nil
+    solve
+  end
+
+  def print
+    @flask_set
+  end
+
+  def inspect
+    @flask_set.transpose.reverse.each do |row|
+      p "%2d "*@flask_set.size % row
+    end;nil
+  end
+
+  def solved?
+    @flask_set.all? { |flask| monofilled?(flask) || empty?(flask) }
+  end
+
+  def add_empty_flask
+    @flask_set << [0]*flask_capacity
+  end
+
+  def ==(other)
+    self.snapshot == other.snapshot
+  end
+
+  protected
+
+  def snapshot
+    @flask_set.flatten.join
+  end
+
+  def do_move(indices)
+    from, to = indices
+    @flask_set[to[0]][to[1]] = @flask_set[from[0]][from[1]]
+    @flask_set[from[0]][from[1]] = 0
+  end
+
+  def repeated_state?
+    current = self
+    while(current = current.parent) do
+      return true if current == self
+    end
+    false
+  end
+
   def solve
     @@level += 1
     p count: @@count
@@ -53,51 +101,11 @@ class FlaskSet
     end
   end
 
-  def do_move(indices)
-    from, to = indices
-    @flask_set[to[0]][to[1]] = @flask_set[from[0]][from[1]]
-    @flask_set[from[0]][from[1]] = 0
-  end
-
-  def repeated_state?
-    current = self
-    while(current = current.parent) do
-      return true if current == self
-    end
-    false
-  end
+  private
 
   def clone
     self.class.new(@flask_set.clone.map(&:clone), self)
   end
-
-  def ==(other)
-    self.snapshot == other.snapshot
-  end
-
-  def print
-    @flask_set
-  end
-
-  def snapshot
-    @flask_set.flatten.join
-  end
-
-  def inspect
-    @flask_set.transpose.reverse.each do |row|
-      p "%2d "*@flask_set.size % row
-    end;nil
-  end
-
-  def solved?
-    @flask_set.all? { |flask| monofilled?(flask) || empty?(flask) }
-  end
-
-  def add_empty_flask
-    @flask_set << [0]*flask_amount
-  end
-
-private
 
   def potential_moves
     return @potential_moves unless @potential_moves.nil?
