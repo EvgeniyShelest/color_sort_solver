@@ -86,8 +86,8 @@ class FlaskSet
       child.do_move(move_indices)
       p do_move: move_indices
       child.inspect
-      # to omit infinite loop detect if upstairs was current state
-      if repeated_state?
+      # to omit infinite loop detect if upstairs was already child state
+      if child.repeated_state?
        p "repeated_state!  "*4
        child = nil
        next
