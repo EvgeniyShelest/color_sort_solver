@@ -34,13 +34,13 @@ class FlaskSet
     solve
   end
 
-  def print
-    @flask_set
-  end
-
   def inspect
     @flask_set.transpose.reverse.each do |row|
-      p "%2d "*@flask_set.size % row
+      row.each do |el|
+        next(print " _ ") if el.zero?
+        print "%2d " % el
+      end
+      print "\n"
     end;nil
   end
 
