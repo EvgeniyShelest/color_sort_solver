@@ -1,5 +1,6 @@
 require './flask_set_shuffle.rb'
 require './flask_set_generator.rb'
+require './utils/colorize.rb'
 
 class FlaskSet
   include FlaskSetShuffle
@@ -35,10 +36,13 @@ class FlaskSet
   end
 
   def inspect
-    @flask_set.transpose.reverse.each do |row|
-      row.each do |el|
-        next(print " _ ") if el.zero?
-        print "%2d " % el
+    colorize = ->(str, moved) { moved ? str.bg_red : str }
+    @flask_set.transpose.reverse.each_with_index do |row, i|
+      row.each_with_index do |el, j|
+        current_index = [j, flask_capacity - i - 1]
+        moved = @from == current_index || @to == current_index
+        next(print colorize.(" _ ", moved)) if el.zero?
+        print colorize.("%2d " % el, moved)
       end
       print "\n"
     end;nil
@@ -63,9 +67,9 @@ class FlaskSet
   end
 
   def do_move(indices)
-    from, to = indices
-    @flask_set[to[0]][to[1]] = @flask_set[from[0]][from[1]]
-    @flask_set[from[0]][from[1]] = 0
+    @from, @to = indices
+    @flask_set[@to[0]][@to[1]] = @flask_set[@from[0]][@from[1]]
+    @flask_set[@from[0]][@from[1]] = 0
   end
 
   def repeated_state?
