@@ -7,6 +7,7 @@ class FlaskSet
 
   @@count = 0
   @@level = 0
+  @@released = 0
 
   class << self
     attr_writer :generator
@@ -18,6 +19,7 @@ class FlaskSet
     def reset_counters
       @@count = 0
       @@level = 0
+      @@released = 0
     end
   end
 
@@ -84,6 +86,7 @@ class FlaskSet
     @@level += 1
     p count: @@count
     p level: @@level
+    p released: @@released
     return "SOLVED!" if solved?
     while(move_indices = potential_moves.shift) do
       child = clone
@@ -94,6 +97,7 @@ class FlaskSet
       if child.repeated_state?
        p "repeated_state!  "*4
        child = nil
+       @@released += 1
        next
       end
       if child.solved?
