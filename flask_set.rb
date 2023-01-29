@@ -23,7 +23,7 @@ class FlaskSet
     end
   end
 
-  attr_reader :parent
+  attr_reader :parent, :from, :to
 
   def initialize(flask_set = nil, parent = nil)
     @flask_set = flask_set || self.class.generator.call()
@@ -51,7 +51,9 @@ class FlaskSet
   end
 
   def solved?
-    @flask_set.all? { |flask| monofilled?(flask) || empty?(flask) }
+    res = @flask_set.all? { |flask| monofilled?(flask) || empty?(flask) }
+    p "Moves amount: #{collect_solution_moves.size}" if res
+    res
   end
 
   def add_empty_flask
@@ -80,6 +82,15 @@ class FlaskSet
       return true if current == self
     end
     false
+  end
+
+  def collect_solution_moves
+    solution_moves = []
+    current = self
+    while(current = current.parent) do
+      solution_moves.unshift [current.from, current.to]
+    end
+    solution_moves
   end
 
   def solve
