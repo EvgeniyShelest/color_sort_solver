@@ -131,15 +131,16 @@ class FlaskSet
 
     @potential_moves = []
     @flask_set.each_with_index do |flask_from, flask_from_index|
-      next if partially_monofilled?(flask_from) || monofilled?(flask_from) || empty?(flask_from)
+      next if most_partially_monofilled?(flask_from) || monofilled?(flask_from) || empty?(flask_from)
       last_non_empty_index_from = last_non_empty_index(flask_from)
       from_index = [flask_from_index, last_non_empty_index_from]
       el = flask_from[last_non_empty_index_from]
 
       # detect best fitable flask to move to (sample [1,1,1,0])
-      flask_to_index = @flask_set.find_index { |flask| flask == ([el]*(flask_capacity - 1) << 0) }
-      if flask_to_index
-        @potential_moves << [from_index, [flask_to_index, (flask_capacity - 1)]]
+      flask_to_index = @flask_set.find_index { |flask| partially_monofilled_with?(flask, el) }
+      if flask_to_index && flask_to_index != flask_from_index
+        last_non_empty_index_to = last_non_empty_index(@flask_set[flask_to_index])
+        @potential_moves << [from_index, [flask_to_index, last_non_empty_index_to + 1]]
         next
       end
       @flask_set.each_with_index do |flask_to, flask_to_index|
@@ -163,11 +164,27 @@ class FlaskSet
   end
 
   def monofilled?(flask)
-    flask[1..].all? { |el| el === flask[0] && !el.zero? }
+    flask[1..].all? { |el| el === flask[0] } && !flask.empty?
   end
 
   def partially_monofilled?(flask)
-    flask[1...-1].all? { |el| el === flask[0] && !el.zero? } && flask[-1].zero?
+    # flask.join.match(/^#{flask[0]}+0+/)  # [1, 1, 10, 4, 5 ] is false positive
+    flask.join("|").match(/^(\|?#{flask[0]})+(\|0)+/) && !flask.empty?
+  end
+
+  def partially_monofilled_with?(flask, el)
+    # flask.join.match(/^#{flask[0]}+0+/)  # [1, 1, 10, 4, 5 ] false positive
+    flask.join("|").match(/^(\|?#{el})+(\|0)+/)
+  end
+
+  def most_partially_monofilled?(flask)
+    partially_monofilled[flask[0]].max == flask
+  end
+
+  def partially_monofilled
+    @partially_monofilled ||= @flask_set
+      .select { |flask| partially_monofilled?(flask) }
+      .reduce(Hash.new([])) { |acc, flask| acc[flask[0]] += [flask]; acc }
   end
 
   def empty?(flask)
