@@ -169,12 +169,12 @@ class FlaskSet
 
   def partially_monofilled?(flask)
     # flask.join.match(/^#{flask[0]}+0+/)  # [1, 1, 10, 4, 5 ] is false positive
-    flask.join("|").match(/^(\|?#{flask[0]})+(\|0)+/) && !flask.empty?
+    flask.join("|").match(/^(\|?#{flask[0]})+(\|0)+$/) && !flask.empty?
   end
 
   def partially_monofilled_with?(flask, el)
     # flask.join.match(/^#{flask[0]}+0+/)  # [1, 1, 10, 4, 5 ] false positive
-    flask.join("|").match(/^(\|?#{el})+(\|0)+/)
+    flask.join("|").match(/^(\|?#{el})+(\|0)+$/)
   end
 
   def most_partially_monofilled?(flask)
