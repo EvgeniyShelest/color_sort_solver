@@ -84,15 +84,6 @@ class FlaskSet
     false
   end
 
-  def collect_solution_moves
-    solution_moves = []
-    current = self
-    while(current = current.parent) do
-      solution_moves.unshift [current.from, current.to]
-    end
-    solution_moves
-  end
-
   def solve
     @@level += 1
     p count: @@count
@@ -124,6 +115,15 @@ class FlaskSet
 
   def clone
     self.class.new(@flask_set.clone.map(&:clone), self)
+  end
+
+  def collect_solution_moves
+    solution_moves = []
+    current = self
+    while(current = current.parent) do
+      solution_moves.unshift [current.from, current.to]
+    end
+    solution_moves
   end
 
   def potential_moves
