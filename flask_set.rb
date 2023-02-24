@@ -178,7 +178,11 @@ class FlaskSet
   end
 
   def most_partially_monofilled?(flask)
-    partially_monofilled[flask[0]].max == flask
+    pmfs = partially_monofilled[flask[0]]
+    # Fixed bug case when there are identical partially monofilled flask we were ignore them to move from.
+    return false if pmfs.count > 1 && pmfs.uniq.count == 1
+
+    pmfs.max == flask
   end
 
   def partially_monofilled
