@@ -3,9 +3,9 @@ class FlaskSetGenerator
   FLASK_CAPACITY = 4
   FLASK_AMOUNT = 4
 
-  def initialize(flask_amount, flask_capacity)
-    @flask_amount = Integer(flask_amount || FLASK_AMOUNT)
-    @flask_capacity = Integer(flask_capacity || FLASK_CAPACITY)
+  def initialize(flask_amount = FLASK_AMOUNT, flask_capacity = FLASK_CAPACITY)
+    @flask_amount = Integer(flask_amount)
+    @flask_capacity = Integer(flask_capacity)
   end
 
   def call
