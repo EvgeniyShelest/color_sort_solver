@@ -203,6 +203,10 @@ class FlaskSet
     flask.find_index { |el| el.zero? }
   end
 
+  def size
+    @flask_set.size
+  end
+
   def flask_capacity
     # this might be
     # self.class.generator.instance_variable_get(:@flask_capacity)

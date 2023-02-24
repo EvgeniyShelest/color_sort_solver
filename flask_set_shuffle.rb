@@ -1,16 +1,20 @@
 module FlaskSetShuffle
-  def shuffle(n = 1, silent: false)
-    n.times do
+  def shuffle(silent: false)
+    moves_amount.times do
       random_move
       unless silent
         inspect
-        p '-'*@flask_set.size*3
+        p '-' * self.size * 3
       end
     end
     @potential_moves = nil
   end
 
-private
+  private
+
+  def moves_amount
+    self.size * self.flask_capacity * 5
+  end
 
   def random_move
     from_flask = random_non_empty_flask

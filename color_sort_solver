@@ -14,7 +14,7 @@ end
 
 FlaskSet.generator = FlaskSetGenerator.new(amount, capacity)
 fs = FlaskSet.new
-fs.shuffle 300, silent: true
+fs.shuffle(silent: true)
 fs.inspect
 
 p 'Press Enter to resolve or other key to exit.'
