@@ -1,9 +1,11 @@
 module FlaskSetShuffle
-  def shuffle(n = 1)
+  def shuffle(n = 1, silent: false)
     n.times do
       random_move
-      inspect
-      p '-'*@flask_set.size*3
+      unless silent
+        inspect
+        p '-'*@flask_set.size*3
+      end
     end
     @potential_moves = nil
   end
