@@ -1,5 +1,7 @@
 # Ruby puzzle solver for https://github.com/EvgeniyShelest/color_sort_js
 
+## Recursive depth first traverse over tree of potential moves.
+
 
 Generating flask set, shuffle and solve it using `color_sort_solver` shell script:
 
