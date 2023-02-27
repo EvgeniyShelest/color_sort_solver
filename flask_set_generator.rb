@@ -12,7 +12,7 @@ class FlaskSetGenerator
     generate_flask_set
   end
 
-private
+  private
 
   def generate_flask_set
     flask_set = []

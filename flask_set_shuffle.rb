@@ -4,7 +4,7 @@ module FlaskSetShuffle
       random_move
       unless silent
         inspect
-        p '-' * self.size * 3
+        p '-' * size * 3
       end
     end
     @potential_moves = nil
@@ -13,7 +13,7 @@ module FlaskSetShuffle
   private
 
   def moves_amount
-    self.size * self.flask_capacity * 5
+    size * flask_capacity * 5
   end
 
   def random_move
@@ -24,10 +24,10 @@ module FlaskSetShuffle
   end
 
   def random_non_empty_flask
-    @flask_set.select {|flask| !empty?(flask) }.sample
+    @flask_set.select { |flask| !empty?(flask) }.sample
   end
 
   def random_non_full_flask(except_flask)
-    @flask_set.select {|flask| flask.include?(0) && flask != except_flask }.sample
+    @flask_set.select { |flask| flask.include?(0) && flask != except_flask }.sample
   end
 end
